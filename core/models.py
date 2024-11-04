@@ -5,6 +5,7 @@ class Administrator(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
     firstname=models.CharField(max_length=255)
     lastname=models.CharField(max_length=255)
+    email = models.EmailField(null=True)
     gender=models.CharField(max_length=1)
     creationdate=models.DateTimeField(auto_now=True)
 
@@ -37,6 +38,7 @@ class Student(models.Model):
     firstname=models.CharField(max_length=255)
     lastname=models.CharField(max_length=255)
     usersname=models.CharField(max_length=255)
+    email = models.EmailField(null=True)
     gender=models.CharField(max_length=1)
     dateofbirth=models.DateField()
     address=models.CharField(max_length=200,default='Bepanda')
