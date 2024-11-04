@@ -122,7 +122,7 @@ STATIC_URL = 'static/'
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [BASE_DIR, 'static']
-LOGIN_URL='/sign-in/'
+LOGIN_URL='/'
 LOGIN_REDIRECT_URL='/'
 
 MEDIA_ROOT=os.path.join(BASE_DIR,'media')

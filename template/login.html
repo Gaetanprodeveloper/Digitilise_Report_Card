@@ -1,20 +1,12 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href='{% static "fontawesome/css/all.min.css" %}'>
-</head>
-<body>
-
+{% extends "base.html" %}
+{% block content %}
     <div class="container">
         <div class="heading">Sign In</div>
-        <form action="" class="form">
+        <form action="" method="POST" class="form">
+            {% csrf_token %}
             <div class="input-wrapper">
                 <i class="fas fa-user icon"></i>
-                <input required="true" class="input" type="text" name="email" id="email" placeholder="Username">
+                <input required="true" class="input" type="text" name="username" id="username" placeholder="Username">
             </div>
             <div class="input-wrapper">
                 <i class="fas fa-lock icon"></i>
@@ -121,5 +113,4 @@
         }
     </style>
 
-</body>
-</html>
+{% endblock content %}
