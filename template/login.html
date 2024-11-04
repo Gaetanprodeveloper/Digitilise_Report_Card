@@ -1,0 +1,125 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href='{% static "fontawesome/css/all.min.css" %}'>
+</head>
+<body>
+
+    <div class="container">
+        <div class="heading">Sign In</div>
+        <form action="" class="form">
+            <div class="input-wrapper">
+                <i class="fas fa-user icon"></i>
+                <input required="true" class="input" type="text" name="email" id="email" placeholder="Username">
+            </div>
+            <div class="input-wrapper">
+                <i class="fas fa-lock icon"></i>
+                <input required="true" class="input" type="password" name="password" id="password" placeholder="Password">
+            </div>
+            <span class="forgot-password"><a href="#">Forgot Password?</a></span>
+            <input class="login-button" type="submit" value="Sign In">
+        </form>    
+    </div>
+
+    <style>
+        body {
+            background-color: aliceblue;
+        }
+
+        .container {
+    max-width: 400px;
+    background: #F8F9FD;
+    border-radius: 40px;
+    padding: 25px 35px; /* Reduce padding on the sides */
+    margin: 150px auto;
+    box-shadow: rgba(133, 189, 215, 0.878) 0px 30px 30px -20px;
+    box-sizing: border-box; /* Ensures padding is included in the total width */
+}
+* {
+    box-sizing: border-box;
+}
+
+
+        .heading {
+            text-align: center;
+            font-weight: 900;
+            font-size: 30px;
+            color: rgb(16, 137, 211);
+        }
+
+        .form {
+            margin-top: 20px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            margin-top: 15px;
+        }
+
+        .icon {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            transform: translateY(-50%);
+            color: #12B1D1;
+            font-size: 18px;
+        }
+
+        .form .input {
+            width: 100%;
+            padding: 15px 20px 15px 45px; /* Adjust left padding to create space for icon */
+            border-radius: 20px;
+            margin-top: 0;
+            background: white;
+            border: none;
+            box-shadow: #cff0ff 0px 10px 10px -5px;
+        }
+
+        .form .input:focus {
+            outline: none;
+            border-inline: 2px solid #12B1D1;
+        }
+
+        .form .forgot-password {
+            display: block;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+        .form .forgot-password a {
+            font-size: 11px;
+            color: #0099ff;
+            text-decoration: none;
+        }
+
+        .form .login-button {
+            display: block;
+            width: 100%;
+            font-weight: bold;
+            background: linear-gradient(45deg, rgb(16, 137, 211) 0%, rgb(18, 177, 209) 100%);
+            color: white;
+            padding-block: 15px;
+            margin: 20px auto;
+            border-radius: 20px;
+            border: none;
+            box-shadow: rgba(133, 189, 215, 0.878) 0px 20px 10px -15px;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .form .login-button:hover {
+            transform: scale(1.03);
+            box-shadow: rgba(133, 189, 215, 0.878) 0px 23px 10px -20px;
+        }
+
+        .form .login-button:active {
+            transform: scale(0.95);
+            box-shadow: rgba(133, 189, 215, 0.878) 0px 15px 10px -10px;
+        }
+    </style>
+
+</body>
+</html>
