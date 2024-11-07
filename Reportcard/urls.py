@@ -17,19 +17,21 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 from core import views
-from core.Administration import views as viws_administration
+from core.Administration import views as views_administration
 from core.Lecturer import views as views_lecturer
 from core.Student import views as views_student
 
 administrator_urlpatters=[
-    
+    path('',views_administration.home, name='home')
 ]
 
 lecturer_urlpatters=[
+    path('',views_lecturer.home, name='home')
     
 ]
 
 student_urlpatters=[
+    path('',views_student.home, name='home')
     
 ]
 

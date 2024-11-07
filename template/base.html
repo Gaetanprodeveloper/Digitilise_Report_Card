@@ -6,31 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href='{% static "fontawesome/css/all.min.css" %}'>
     <title>Document</title>
+    {% load bootstrap4 %} 
+    {% bootstrap_css %} 
+    {% bootstrap_javascript jquery='full' %}
 </head>
 <body>
 
     {% block content %}
 
     {% endblock content %}
-    <script src="https://unpkg.com/bootoast@1.0.1/dist/bootoast.min.js"></script>
-<link rel="stylesheet" href="https://unpkg.com/bootoast@1.0.1/dist/bootoast.min.css">
-<script>
-
-    function toast(message, type) {
-        bootoast.toast({
-            position: 'leftBottom',
-            message,
-            type,
-        });
-    }
-
-    // Check if there are messages to display
-    {% if messages %}
-        {% for message in messages %}
-            // Display a toast for each message
-            toast('{{ message }}', '{{ message.tags }}');
-        {% endfor %}
-    {% endif %}
-</script>
 </body>
 </html>
