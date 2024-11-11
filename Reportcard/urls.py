@@ -20,6 +20,7 @@ from core import views
 from core.Administration import views as views_administration
 from core.Lecturer import views as views_lecturer
 from core.Student import views as views_student
+from django.contrib.auth import views as auth_views
 
 administrator_urlpatters=[
     path('',views_administration.home, name='home')
@@ -38,6 +39,7 @@ student_urlpatters=[
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.login_page,name='login'),
+    path('sign-out/',auth_views.LogoutView.as_view(next_page="login"), name='sign-out'),
     path('administration/',include((administrator_urlpatters,'administration'))),
     path('lecturer',include((lecturer_urlpatters, 'lecturer'))),
     path('student',include((student_urlpatters, 'student')))

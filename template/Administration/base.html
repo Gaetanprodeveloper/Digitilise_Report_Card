@@ -1,4 +1,255 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
+<div class="row m-0">
+  <!-- Sidebar Container -->
+  <div class="col-lg-3 sidebar sidebar-container shadow-lg bg-light rounded position-fixed d-none d-lg-block">
+    <nav class="p-3">
+      <div class="position-sticky">
+        <ul class="sidebar-nav">
+          <!-- Dashboard -->
+          <li class="nav-item mb-5">
+            <a class="nav-link d-flex align-items-center" href="#">
+              <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
+            </a>
+          </li>
 
+          <!-- Department Management -->
+          <li class="nav-item mb-3">
+            <a class="nav-link d-flex align-items-center collapsed" href="#" data-toggle="collapse" data-target="#departmentMenu" aria-expanded="false">
+              <i class="fas fa-building mr-2"></i> Department Management
+            </a>
+            <div class="collapse" id="departmentMenu">
+              <ul class="nav-content">
+                <li><a href="#">Add Department</a></li>
+                <li><a href="#">View Departments</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- Class Management -->
+          <li class="nav-item mb-3">
+            <a class="nav-link d-flex align-items-center collapsed" href="#" data-toggle="collapse" data-target="#classMenu" aria-expanded="false">
+              <i class="fas fa-chalkboard mr-2"></i> Class Management
+            </a>
+            <div class="collapse" id="classMenu">
+              <ul class="nav-content">
+                <li><a href="#">Add Class</a></li>
+                <li><a href="#">View Classes</a></li>
+              </ul>
+            </div>
+          </li>
+
+           <!-- Course Management -->
+           <li class="nav-item mb-3">
+            <a class="nav-link d-flex align-items-center collapsed" href="#" data-toggle="collapse" data-target="#courseMenu" aria-expanded="false">
+              <i class="fas fa-building mr-2"></i> Course Management
+            </a>
+            <div class="collapse" id="courseMenu">
+              <ul class="nav-content">
+                <li><a href="#">Add Course</a></li>
+                <li><a href="#">View Courses</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- Student Management -->
+          <li class="nav-item mb-3">
+            <a class="nav-link d-flex align-items-center collapsed" href="#" data-toggle="collapse" data-target="#studentMenu" aria-expanded="false">
+              <i class="fas fa-user-graduate mr-2"></i> Student Management
+            </a>
+            <div class="collapse" id="studentMenu">
+              <ul class="nav-content">
+                <li><a href="#">Add Student</a></li>
+                <li><a href="#">View Students</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- Lecturer Management -->
+          <li class="nav-item mb-3">
+            <a class="nav-link d-flex align-items-center collapsed" href="#" data-toggle="collapse" data-target="#lecturerMenu" aria-expanded="false">
+              <i class="fas fa-chalkboard-teacher mr-2"></i> Lecturer Management
+            </a>
+            <div class="collapse" id="lecturerMenu">
+              <ul class="nav-content">
+                <li><a href="#">Add Lecturer</a></li>
+                <li><a href="#">View Lecturers</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- Marks Management -->
+          <li class="nav-item mb-3">
+            <a class="nav-link d-flex align-items-center collapsed" href="#" data-toggle="collapse" data-target="#marksMenu" aria-expanded="false">
+              <i class="fas fa-clipboard-list mr-2"></i> Marks Management
+            </a>
+            <div class="collapse" id="marksMenu">
+              <ul class="nav-content">
+                <li><a href="#">Add Marks</a></li>
+                <li><a href="#">View Marks</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <!-- Report Card Management -->
+          <li class="nav-item mb-3">
+            <a class="nav-link d-flex align-items-center collapsed" href="#" data-toggle="collapse" data-target="#reportCardMenu" aria-expanded="false">
+              <i class="fas fa-file-alt mr-2"></i> Report Card Management
+            </a>
+            <div class="collapse" id="reportCardMenu">
+              <ul class="nav-content">
+                <li><a href="#">Print for Student</a></li>
+                <li><a href="#">Print for Department</a></li>
+                <li><a href="#">Print All</a></li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+  
+  <!-- Main Content Area -->
+  <div class="col-lg-9 offset-lg-3">
+    {% block dash %}
+    <!-- Content for the main dashboard or specific page content goes here -->
+    {% endblock dash %}
+  </div>
+
+  <!-- Sidebar Toggle Button for Mobile -->
+  <button class="sidebar-toggle-btn d-lg-none mt-5" >
+    <i class="fas fa-bars"></i> <!-- Hamburger icon -->
+  </button>
+</div>
+
+<!-- Sidebar and Toggle Button Styles -->
+<style>
+  /* Sidebar Styles */
+  .sidebar {
+    height: 100vh;
+    transition: margin-left 0.3s ease;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    overflow-y: auto;
+  }
+
+  .sidebar-nav {
+  list-style-type: none; /* Remove default list bullets */
+  padding-left: 0; /* Remove any left padding */
+}
+
+  .sidebar-toggle-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    padding: 10px 15px;
+    border-radius: 5px;
+    z-index: 999;
+    cursor: pointer;
+  }
+
+  .sidebar-nav .nav-item {
+    margin-bottom: 5px;
+  }
+
+  .sidebar-nav .nav-link {
+    font-size: 18px;
+    font-weight: 700; /* Bold text */
+    color: #000000; /* Black text */
+    background: #f6f9ff;
+    padding: 15px 20px;
+    border-radius: 4px;
+    transition: 0.3s;
+    display: flex;
+    align-items: center;
+  }
+
+  .sidebar-nav .nav-link.collapsed {
+    color: #000000; /* Black text for collapsed links */
+    background: #fff;
+  }
+
+  .sidebar-nav .nav-link:hover {
+    color: #4154f1;
+    background: #f6f9ff;
+  }
+
+  .sidebar-nav .nav-content a {
+    font-size: 16px;
+    font-weight: 600;
+    color: #999999; /* Light text for dropdown */
+    transition: 0.3s;
+    padding: 10px 0 10px 40px;
+  }
+
+  .sidebar-nav .nav-content a:hover {
+    color: #4154f1;
+  }
+
+  /* Responsive Adjustment */
+  .col-lg-9.offset-lg-3 {
+    margin-left: 25%;
+  }
+
+  /* Mobile sidebar toggle */
+  .sidebar-toggle-btn i {
+    font-size: 25px;
+    color: #000000; /* Black icon */
+  }
+
+  .sidebar-container {
+    display: block;
+  }
+
+  .sidebar-container.hide {
+    display: none;
+  }
+
+  @media (max-width: 767px) {
+    .sidebar {
+      display: none;
+    }
+    
+    .sidebar-toggle-btn {
+      display: block;
+    }
+    .sidebar-container {
+  height: 100vh;
+  width: 80%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #f8f9fa;
+  overflow-x: hidden;
+  transition: 0.3s;
+  padding-top: 20px;
+}
+  }
+</style>
+
+<!-- Sidebar Toggle Script for Mobile -->
+<script>
+    // JavaScript to handle sidebar toggle functionality
+    const sidebar = document.querySelector('.sidebar');
+    const sidebarToggleBtn = document.querySelector('.sidebar-toggle-btn');
+    
+    sidebarToggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('d-block');
+    });
+
+    const sidebarLinks = document.querySelectorAll('.nav-link');
+
+    sidebarLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        sidebarLinks.forEach(item => item.classList.remove('clicked'));
+        link.classList.add('clicked');
+      });
+    });
+    </script>
 {% endblock content %}
