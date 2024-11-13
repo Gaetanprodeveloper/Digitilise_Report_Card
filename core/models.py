@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 class Administrator(models.Model):
     user=models.OneToOneField(User,on_delete=models.CASCADE)
@@ -7,7 +8,7 @@ class Administrator(models.Model):
     lastname=models.CharField(max_length=255)
     email = models.EmailField(null=True)
     gender=models.CharField(max_length=1)
-    creationdate=models.DateTimeField(auto_now=True)
+    creationdate=models.DateField(default=timezone.now)
 
     def __str__(self):
         return self.lastname
@@ -16,9 +17,9 @@ class Classe(models.Model):
     creator=models.ForeignKey(Administrator,on_delete=models.DO_NOTHING)
     classcode=models.CharField(max_length=10)
     classname=models.CharField(max_length=255)
-    level=models.IntegerField()
+    level=models.CharField(max_length=255,null=True)
     speciality=models.CharField(max_length=255)
-    creationdate=models.DateTimeField(auto_now=True)
+    creationdate=models.DateField(default=timezone.now)
     
     def __str__(self):
         return self.classname
@@ -27,6 +28,8 @@ class Department(models.Model):
     creator=models.ForeignKey(Administrator,on_delete=models.DO_NOTHING)
     departmentcode=models.CharField(max_length=20)
     departmentname=models.CharField(max_length=255)
+    classe=models.ForeignKey(Classe,on_delete=models.DO_NOTHING,null=True)
+    creationdate=models.DateField(default=timezone.now)
 
     def __str__(self):
         return self.departmentname
@@ -45,7 +48,7 @@ class Student(models.Model):
     phonenumber=models.CharField(max_length=20,default='+237677285763')
     picture=models.ImageField(null=False,upload_to='students/',default='teacher.png')
     parentemail=models.EmailField()
-    creationdate=models.DateTimeField(auto_now=True)
+    creationdate=models.DateField(default=timezone.now)
 
     def __str__(self):
         return self.firstname
@@ -63,6 +66,7 @@ class Lecturer(models.Model):
     address=models.CharField(max_length=200,default='Logbaba')
     phonenumber=models.IntegerField(default=677285764)
     picture=models.ImageField(null=False,upload_to='lecturer_pictures',default='teacher.png')
+    creationdate=models.DateField(default=timezone.now)
     def __str__(self):
         return self.firstname
     
@@ -97,7 +101,7 @@ class Course(models.Model):
     coursetitle=models.CharField(max_length=255)
     credits=models.IntegerField()
     semester=models.CharField(max_length=25,choices=SEMESTER,default=SEMESTER_1)
-    creationdate=models.DateField(auto_now=True)
+    creationdate=models.DateField(default=timezone.now)
 
     def __str__(self):
         return self.coursetitle 
@@ -130,6 +134,7 @@ class Mark(models.Model):
     mark=models.IntegerField()
     grade=models.CharField(max_length=10,choices=Grade,default=Grade_A1)
     semester=models.CharField(max_length=25)
+    creationdate=models.DateField(default=timezone.now)
 
 
 

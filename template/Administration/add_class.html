@@ -1,0 +1,64 @@
+{% extends "Administration/base.html" %}
+{% block dash %}
+<form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+    {% csrf_token %}
+    <p class="mt-5" style="font-size: 20px; font-weight: bolder; font-family: Arial, Helvetica, sans-serif;">Add Class</p>
+    <div class="card bg-white mt-2 mb-5">
+    
+      <div class="card-body">
+            <div class="form-row">
+              <div class="col-md-6 mb-3">
+                <label for="validationTooltip01">Speciality</label>
+                <input type="text" class="form-control" name="speciality" id="validationTooltip01" required>
+                <div class="invalid-tooltip">
+                  Please provide a speciality.
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="validationTooltip02">Class Name</label>
+                <input type="text" class="form-control" name="classname" id="validationTooltip02" required>
+                <div class="invalid-tooltip">
+                  Please provide a class name.
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="col-md-6 mb-3">
+                <label for="validationTooltip03">Class Code</label>
+                <input type="text" class="form-control" name="classcode" id="validationTooltip03" required>
+                <div class="invalid-tooltip">
+                  Please provide a valid class code.
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="validationTooltip04">Level</label>
+                <input type="text" class="form-control" name="level" id="validationTooltip04" required>
+                <div class="invalid-tooltip">
+                  Please provide a valid level.
+                </div>
+              </div>
+            </div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<script>
+  // Enable Bootstrap validation on form submit
+  (function() {
+    'use strict';
+    window.addEventListener('load', function() {
+      var forms = document.getElementsByClassName('needs-validation');
+      Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+          if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+</script>
+{% endblock dash %}

@@ -23,7 +23,13 @@ from core.Student import views as views_student
 from django.contrib.auth import views as auth_views
 
 administrator_urlpatters=[
-    path('',views_administration.home, name='home')
+    path('',views_administration.home, name='home'),
+    path('createclass/',views_administration.createclass, name='createclass'),
+    path('classes/',views_administration.classes, name='classes'),
+    path('classes/<id>/',views_administration.moreinfoclass, name='classeinfo'),
+    path('classes/update/<id>/',views_administration.updateclass, name='updateclass'),
+    path('classes/delete/<id>/',views_administration.delete_class, name='deleteclass')
+    
 ]
 
 lecturer_urlpatters=[

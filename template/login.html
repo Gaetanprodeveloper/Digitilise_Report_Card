@@ -1,5 +1,6 @@
-{% extends "base.html" %}
+{% extends "base.html" %}{%load static%}
 {% block content %}
+<div class="main">
     <div class="container">
         <div class="heading">Sign In</div>
         <form action="" method="POST" class="form">
@@ -24,12 +25,18 @@
             <input class="login-button" type="submit" value="Sign In">
         </form>    
     </div>
+</div>
 
     <style>
         /* General styling */
         body {
             background-color: aliceblue;
+            background-image: url("{%static 'images/logo.png'%}");
+            background-repeat: no-repeat;
+            background-position: left;
+          
         }
+        
 
         .container {
             max-width: 400px;
@@ -130,6 +137,12 @@
             transform: scale(0.95);
             box-shadow: rgba(133, 189, 215, 0.878) 0px 15px 10px -10px;
         }
+
+        @media (max-width: 767px) {
+    .main{
+        padding: 10px;
+    }
+  }
     </style>
 
     <script>
