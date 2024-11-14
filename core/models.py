@@ -13,26 +13,27 @@ class Administrator(models.Model):
     def __str__(self):
         return self.lastname
     
+    
+class Department(models.Model):
+    creator=models.ForeignKey(Administrator,on_delete=models.DO_NOTHING)
+    departmentcode=models.CharField(max_length=20)
+    departmentname=models.CharField(max_length=255)
+    creationdate=models.DateField(default=timezone.now)
+
+    def __str__(self):
+        return self.departmentname
+    
 class Classe(models.Model):
     creator=models.ForeignKey(Administrator,on_delete=models.DO_NOTHING)
     classcode=models.CharField(max_length=10)
     classname=models.CharField(max_length=255)
     level=models.CharField(max_length=255,null=True)
     speciality=models.CharField(max_length=255)
+    department=models.ForeignKey(Department,on_delete=models.DO_NOTHING,null=True)
     creationdate=models.DateField(default=timezone.now)
     
     def __str__(self):
         return self.classname
-    
-class Department(models.Model):
-    creator=models.ForeignKey(Administrator,on_delete=models.DO_NOTHING)
-    departmentcode=models.CharField(max_length=20)
-    departmentname=models.CharField(max_length=255)
-    classe=models.ForeignKey(Classe,on_delete=models.DO_NOTHING,null=True)
-    creationdate=models.DateField(default=timezone.now)
-
-    def __str__(self):
-        return self.departmentname
     
 class Student(models.Model):
     creator=models.ForeignKey(Administrator,on_delete=models.DO_NOTHING)

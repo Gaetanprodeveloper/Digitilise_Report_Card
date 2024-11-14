@@ -15,10 +15,14 @@
                 </div>
               </div>
               <div class="col-md-6 mb-3">
-                <label for="validationTooltip02">Class Name</label>
-                <input type="text" class="form-control" name="classname" id="validationTooltip02" value="{{classe.classname}}" required>
+                <label for="validationTooltip02">Department</label>
+                <select class="form-control" name="department" id="validationTooltip02" required>
+                    {% for dept in departments %}
+                        <option value="{{ dept.departmentname }}">{{ dept.departmentname }}</option>
+                    {% endfor %}
+                </select>
                 <div class="invalid-tooltip">
-                  Please provide a class name.
+                  Please select a department.
                 </div>
               </div>
             </div>

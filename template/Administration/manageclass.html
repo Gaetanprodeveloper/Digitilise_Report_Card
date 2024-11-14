@@ -16,7 +16,7 @@
                 <thead>
                   <tr class="bg-light">
                     <th><i class="fa fa-book mr-1"></i> SPECIALITY</th>
-                    <th><i class="fa fa-graduation-cap mr-1"></i> CLASS NAME</th>
+                    <th><i class="fa fa-graduation-cap mr-1"></i> DEPARTMENT</th>
                     <th><i class="fa fa-code mr-1"></i> CLASS CODE</th>
                     <th><i class="fa fa-level-up-alt mr-1"></i> LEVEL</th>
                     <th><i class="fa fa-calendar-alt mr-1"></i> CREATED ON</th>
@@ -27,7 +27,7 @@
                   {% for classe in classe %}
                   <tr>
                     <td>{{ classe.speciality }}</td>
-                    <td>{{ classe.classname }}</td>
+                    <td>{{ classe.department }}</td>
                     <td>{{ classe.classcode }}</td>
                     <td>{{ classe.level }}</td>
                     <td>{{ classe.creationdate }}</td>
