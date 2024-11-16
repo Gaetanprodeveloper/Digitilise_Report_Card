@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path,include
 from core import views
@@ -21,6 +22,7 @@ from core.Administration import views as views_administration
 from core.Lecturer import views as views_lecturer
 from core.Student import views as views_student
 from django.contrib.auth import views as auth_views
+from django.conf.urls.static import static
 
 administrator_urlpatters=[
     path('',views_administration.home, name='home'),
@@ -28,7 +30,17 @@ administrator_urlpatters=[
     path('classes/',views_administration.classes, name='classes'),
     path('classes/<id>/',views_administration.moreinfoclass, name='classeinfo'),
     path('classes/update/<id>/',views_administration.updateclass, name='updateclass'),
-    path('classes/delete/<id>/',views_administration.delete_class, name='deleteclass')
+    path('classes/delete/<id>/',views_administration.delete_class, name='deleteclass'),
+    path('createdepartment/',views_administration.createdepartment, name='createdepartment'),
+    path('managedepartment/',views_administration.managedepartments, name='managedepartment'),
+    path('departments/<id>/',views_administration.viewdepartment, name='viewdepartment'),
+    path('department/update/<id>/',views_administration.updatedepartment, name='updatedepartment'),
+    path('department/delete/<id>/',views_administration.deletedepartment, name='deletedepartment'),
+    path('createstudent/',views_administration.createstudent, name='createstudent'),
+    path('students/',views_administration.studentlist, name='studentlist'),
+    path('student/<id>/',views_administration.student_detail, name='viewstudent'),
+    path('student/update/<id>/',views_administration.updatestudent, name='updatestudent'),
+    path('student/delete/<id>/',views_administration.deletestudent, name='deletestudent'),
     
 ]
 
@@ -50,3 +62,6 @@ urlpatterns = [
     path('lecturer',include((lecturer_urlpatters, 'lecturer'))),
     path('student',include((student_urlpatters, 'student')))
 ]
+
+if settings.DEBUG:
+    urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

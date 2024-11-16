@@ -21,8 +21,8 @@
             </a>
             <div class="collapse" id="departmentMenu">
               <ul class="nav-content">
-                <li><a href="#">Add Department</a></li>
-                <li><a href="#">View Departments</a></li>
+                <li><a href="{%url 'administration:createdepartment'%}">Add Department</a></li>
+                <li><a href="{%url 'administration:managedepartment'%}">View Departments</a></li>
               </ul>
             </div>
           </li>
@@ -60,8 +60,8 @@
             </a>
             <div class="collapse" id="studentMenu">
               <ul class="nav-content">
-                <li><a href="#">Add Student</a></li>
-                <li><a href="#">View Students</a></li>
+                <li><a href="{%url 'administration:createstudent'%}">Add Student</a></li>
+                <li><a href="{%url 'administration:studentlist'%}">View Students</a></li>
               </ul>
             </div>
           </li>
@@ -144,8 +144,8 @@
     border-radius: 10px;
   }
   .sidebar::-webkit-scrollbar-thumb {
-    background-color: #4154f1;
-    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.1); /* Light gray color for the scrollbar thumb */
+        border-radius: 10px;
   }
   .sidebar::-webkit-scrollbar-thumb:hover {
     background-color: #3154d1;

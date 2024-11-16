@@ -43,7 +43,7 @@ class Student(models.Model):
     lastname=models.CharField(max_length=255)
     usersname=models.CharField(max_length=255)
     email = models.EmailField(null=True)
-    gender=models.CharField(max_length=1)
+    gender=models.CharField(max_length=10)
     dateofbirth=models.DateField()
     address=models.CharField(max_length=200,default='Bepanda')
     phonenumber=models.CharField(max_length=20,default='+237677285763')

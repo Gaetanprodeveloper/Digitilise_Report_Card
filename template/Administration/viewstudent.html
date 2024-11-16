@@ -1,0 +1,38 @@
+{% extends "Administration/base.html" %}
+
+{% block dash %}
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Student Details: {{ student.firstname }} {{ student.lastname }}</h5>
+                    <a href="{% url 'administration:studentlist' %}" class="btn btn-secondary btn-sm">
+                        <i class="fa fa-arrow-left mr-1"></i> Back to List
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="{{ student.picture.url }}" alt="Student Picture" class="img-fluid rounded-circle" style="width: 200px; height: 200px;">
+                        </div>
+                        <div class="col-md-8">
+                            <h4 class="mb-3">Personal Information</h4>
+                            <p><strong>Student ID:</strong> {{ student.id }}</p>
+                            <p><strong>Full Name:</strong> {{ student.firstname }} {{ student.lastname }}</p>
+                            <p><strong>Email:</strong> {{ student.email }}</p>
+                            <p><strong>Gender:</strong> {{ student.gender }}</p>
+                            <p><strong>Date of Birth:</strong> {{ student.dateofbirth }}</p>
+                            <p><strong>Phone Number:</strong> {{ student.phonenumber }}</p>
+                            <p><strong>Address:</strong> {{ student.address }}</p>
+                            <p><strong>Tutor Email:</strong> {{ student.parentemail }}</p>
+                            <p><strong>Department:</strong> {{ student.classe }}</p>
+                            <p><strong>Enrollment Date:</strong> {{ student.creationdate }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock dash %}

@@ -1,0 +1,156 @@
+{% extends "Administration/base.html" %}
+
+{% block dash %}
+    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <p class="mt-5" style="font-size: 20px; font-weight: bolder; font-family: Arial, Helvetica, sans-serif;">Update Student</p>
+        
+        <div class="card bg-white mt-2 mb-5">
+            <div class="card-body">
+                <!-- First and Last Name -->
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <label for="username">Username</label>
+                        <input type="text" class="form-control" name="username" id="username" value="{{ student.usersname }}" required>
+                        <div class="invalid-tooltip">
+                            Please provide a username.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="firstname">First Name</label>
+                        <input type="text" class="form-control" name="firstname" id="firstname" value="{{ student.firstname }}" required>
+                        <div class="invalid-tooltip">
+                            Please provide the student's first name.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <label for="lastname">Last Name</label>
+                        <input type="text" class="form-control" name="lastname" id="lastname" value="{{ student.lastname }}" required>
+                        <div class="invalid-tooltip">
+                            Please provide the student's last name.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" name="email" id="email" value="{{ student.email }}" required>
+                        <div class="invalid-tooltip">
+                            Please provide a valid email address.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tutor Email and Gender -->
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <label for="tutoremail">Tutor Email</label>
+                        <input type="email" class="form-control" name="tutoremail" id="tutoremail" value="{{ student.parentemail }}" required>
+                        <div class="invalid-tooltip">
+                            Please provide a valid tutor email address.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="gender">Gender</label>
+                        <select class="form-control" name="gender" id="gender" required>
+                            <option value="">Select Gender</option>
+                            <option value="Male" {% if student.gender == "Male" %}selected{% endif %}>Male</option>
+                            <option value="Female" {% if student.gender == "Female" %}selected{% endif %}>Female</option>
+                            <option value="Other" {% if student.gender == "Other" %}selected{% endif %}>Other</option>
+                        </select>
+                        <div class="invalid-tooltip">
+                            Please select a gender.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Class, Date of Birth, Phone -->
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <label for="class">Class</label>
+                        <select class="form-control" name="class" id="class" required>
+                            <option value="">Select Class</option>
+                            {% for classe in classes %}
+                                <option value="{{ classe.classcode }}" {% if student.classe.classcode == classe.classcode %}selected{% endif %}>
+                                    {{ classe.classcode }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-tooltip">
+                            Please select a class.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="dateofbirth">Date of Birth</label>
+                        <input type="date" class="form-control" name="dateofbirth" id="dateofbirth" value="{{ student.dateofbirth }}" required>
+                        <div class="invalid-tooltip">
+                            Please provide a valid date of birth.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Phone and Address -->
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" class="form-control" name="phone" id="phone" value="{{ student.phonenumber }}" required>
+                        <div class="invalid-tooltip">
+                            Please provide a valid phone number.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="address">Address</label>
+                        <textarea class="form-control" name="address" id="address" rows="3" required>{{ student.address }}</textarea>
+                        <div class="invalid-tooltip">
+                            Please provide an address.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Profile Picture -->
+                <div class="form-row">
+                    <div class="col-md-12 mb-3">
+                        <label for="pic">Upload Picture</label>
+                        <input type="file" class="form-control-file" name="pic" id="pic">
+                        <div class="invalid-tooltip">
+                            Please upload a picture.
+                        </div>
+                        {% if student.picture %}
+                            <p>Current picture:</p>
+                            <img src="{{ student.picture.url }}" alt="Current Picture" style="width: 150px;">
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Password Field (optional) -->
+                <div class="form-row">
+                    <div class="col-md-12 mb-3">
+                        <label for="password">Password (Leave blank if unchanged)</label>
+                        <input type="password" class="form-control" name="password" id="password">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update Student</button>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+{% endblock %}
