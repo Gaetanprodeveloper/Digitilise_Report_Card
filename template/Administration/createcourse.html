@@ -1,0 +1,81 @@
+{% extends "Administration/base.html" %}
+{% block dash %}
+<form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+    {% csrf_token %}
+    <p class="mt-5" style="font-size: 20px; font-weight: bolder; font-family: Arial, Helvetica, sans-serif;">Add Course</p>
+    <div class="card bg-white mt-2 mb-5">
+        <div class="card-body">
+            <div class="form-row">
+                <div class="col-md-6 mb-3">
+                    <label for="validationTooltip01">Course Title</label>
+                    <input type="text" class="form-control" name="coursetitle" id="validationTooltip01" required>
+                    <div class="invalid-tooltip">Please provide a course title.</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="validationTooltip02">Course Code</label>
+                    <input type="text" class="form-control" name="coursecode" id="validationTooltip02" required>
+                    <div class="invalid-tooltip">Please provide a valid course code.</div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6 mb-3">
+                    <label for="validationTooltip03">Credits</label>
+                    <input type="number" class="form-control" name="credits" id="validationTooltip03" required>
+                    <div class="invalid-tooltip">Please provide the number of credits.</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="validationTooltip04">Semester</label>
+                    <select class="form-control" name="semester" id="validationTooltip04" required>
+                        <option value="">Select Semester</option>
+                        {% for sem in semesters %}
+                            <option value="{{ sem.0 }}">{{ sem.1 }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-tooltip">Please select a semester.</div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6 mb-3">
+                    <label for="validationTooltip05">Class</label>
+                    <select class="form-control" name="class" id="validationTooltip05" required>
+                        <option value="">Select Class</option>
+                        {% for clazz in classes %}
+                            <option value="{{ clazz.classcode }}">{{ clazz.classcode }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-tooltip">Please select a class.</div>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label for="validationTooltip06">Lecturer</label>
+                    <select class="form-control" name="lecturer" id="validationTooltip06" required>
+                        <option value="">Select Lecturer</option>
+                        {% for lect in lecturers %}
+                            <option value="{{ lect.firstname }}">{{ lect.firstname }} {{ lect.lastname }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-tooltip">Please select a lecturer.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+<script>
+  (function() {
+    'use strict';
+    window.addEventListener('load', function() {
+      var forms = document.getElementsByClassName('needs-validation');
+      Array.prototype.filter.call(forms, function(form) {
+        form.addEventListener('submit', function(event) {
+          if (form.checkValidity() === false) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    }, false);
+  })();
+</script>
+{% endblock dash %}

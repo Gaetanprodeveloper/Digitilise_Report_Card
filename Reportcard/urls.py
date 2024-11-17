@@ -46,6 +46,8 @@ administrator_urlpatters=[
     path('lecturer/<id>/',views_administration.lecturer_detail, name='lecturerdetail'),
     path('lecturer/update/<id>/',views_administration.updatelecturer, name='updatelecturer'),
     path('lecturer/delete/<id>/',views_administration.deletelecturer, name='deletelecturer'),
+    path('createcourse/',views_administration.create_course, name='createcourse'),
+    path('courses/',views_administration.managecourse, name='managecourse'),
     
 ]
 

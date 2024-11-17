@@ -471,3 +471,60 @@ def deletelecturer(request,id):
     if delete:
         messages.success(request,"Successfully deleted")
     return redirect(reverse('administration:managelecturer'))
+
+
+@login_required
+def create_course(request):
+    # Fetch the existing lecturers and classes for the dropdown options
+    lecturers = Lecturer.objects.all()
+    classes = Classe.objects.all()
+    
+    if request.method == 'POST':
+        # Get current logged in user (administrator)
+        user = request.user
+        creator = Administrator.objects.get(user=user)
+        
+        # Collect data from the form
+        title = request.POST['coursetitle']
+        code = request.POST['coursecode']
+        credits = request.POST['credits']
+        semester = request.POST['semester']
+        classe_name = request.POST['class']
+        lecturer_name = request.POST['lecturer']
+        
+        # Fetch the class and lecturer objects based on their names
+        classe = Classe.objects.get(classcode=classe_name)
+        lecturer = Lecturer.objects.get(firstname=lecturer_name)
+        
+        # Create the course
+        course = Course.objects.create(
+            creator=creator,
+            lecturer=lecturer,
+            classe=classe,
+            coursecode=code,
+            coursetitle=title,
+            credits=credits,
+            semester=semester,
+        )
+        
+        # Check if the course was created and send a message
+        if course:
+            messages.success(request, "Course created successfully!")
+            return redirect(reverse('administration:createcourse'))  # Redirect to the list of courses
+        else:
+            messages.error(request, "Error creating the course.")
+            return redirect(reverse('administration:createcourse'))  # Stay on the create course page
+    
+    else:
+        # Return to the form page if the method is GET
+        return render(request, 'administration/createcourse.html', {
+            'lecturers': lecturers,
+            'classes': classes,
+            'semesters': Course.SEMESTER  # Pass the SEMESTER choices to the template
+        })
+        
+        
+def managecourse(request):
+    # Get all courses created by the current administrator
+    courses = Course.objects.all()
+    return render(request,'administration/managecourse.html',{'courses':courses})
