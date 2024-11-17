@@ -239,12 +239,13 @@ def createstudent(request):
         # Render the create student form with available classes
         return render(request, 'administration/createstudent.html', {"classes": classes})
     
-    
+@login_required    
 def studentlist(request):
     students=Student.objects.all()
     return render(request,'administration/studentlist.html',{'students':students})
 
 
+@login_required
 def student_detail(request, id):
     # Fetch the student using the unique student ID
     student = get_object_or_404(Student, id=id)
@@ -252,6 +253,7 @@ def student_detail(request, id):
     return render(request, 'administration/viewstudent.html', {'student': student})
 
 
+@login_required
 def updatestudent(request, id):
     student = Student.objects.get(id=id)
     classes = Classe.objects.all()  # Ensure this is called as a function
@@ -317,12 +319,155 @@ def updatestudent(request, id):
     else:
         # Render the update form with the current student's data and classes
         return render(request, 'administration/updatestudent.html', {"student": student, "classes": classes})
-    
+
+@login_required    
 def deletestudent(request,id):
     student=Student.objects.get(id=id)
     user=student.user
     delete=user.delete()
     if delete:
-        messages.warning(request,"Successfully deleted")
+        messages.success(request,"Successfully deleted")
     return redirect(reverse('administration:studentlist'))
 
+
+@login_required
+def createlecturers(request):
+    user = request.user
+    departments = Department.objects.all()
+    if request.method == "POST":
+        usersname = request.POST['username']
+        firstname = request.POST['firstname']
+        lastname = request.POST['lastname']
+        gender = request.POST['gender']
+        department_name = request.POST['department']
+        dateofbirth = request.POST['dateofbirth']
+        address = request.POST['address']
+        phonenumber = request.POST['phonenumber']
+        picture = request.FILES['picture']
+        email = request.POST['email']
+        
+        # Check if username exists
+        if User.objects.filter(username=usersname).exists():
+            messages.warning(request, 'Username already exists. Please choose another username.')
+            return redirect(reverse('administration:createlecturer'))
+
+        creator = Administrator.objects.get(user=user)
+        department = Department.objects.get(departmentname=department_name)
+        new_user = User.objects.create_user(username=usersname, password="lecturer")
+        
+        new_user.first_name=firstname
+        new_user.last_name=lastname
+        new_user.save()
+
+        if new_user:
+            lecturer = Lecturer.objects.create(
+                creator=creator,
+                user=new_user,
+                department=department,
+                firstname=firstname,
+                lastname=lastname,
+                gender=gender,
+                dateofbirth=dateofbirth,
+                address=address,
+                email=email,
+                phonenumber=phonenumber,
+                picture=picture
+            )
+            if lecturer:
+                messages.success(request, 'Lecturer successfully created.')
+                return redirect(reverse('administration:managelecturer'))
+            else:
+                messages.warning(request, 'Error, try again.')
+                return redirect(reverse('administration:createlecturer'))
+    return render(request, 'administration/addlecturer.html', {'departments': departments})
+
+@login_required
+def managelecturer(request):
+    lecturers = Lecturer.objects.all()
+    return render(request, 'administration/managelecturer.html', {'lecturers': lecturers})
+
+
+
+@login_required
+def lecturer_detail(request, id):
+    # Fetch the lecturer using the unique lecturer ID
+    lecturer = get_object_or_404(Lecturer, id=id)
+    
+    return render(request, 'administration/viewlecturer.html', {'lecturer': lecturer})
+
+
+
+@login_required
+def updatelecturer(request, id):
+    lecturer = Lecturer.objects.get(id=id)
+    departments = Department.objects.all()
+
+    if request.method == 'POST':
+        # Get form data
+        usersname = request.POST['username']
+        firstname = request.POST['firstname']
+        lastname = request.POST['lastname']
+        email = request.POST['email']
+        gender = request.POST['gender']
+        department_name = request.POST['department']
+        dateofbirth = request.POST['dateofbirth']
+        address = request.POST['address']
+        phone = request.POST['phone']
+
+        # Handle file upload for picture
+        pic = request.FILES.get('pic')  # Use .get() to avoid KeyError if no file is uploaded
+
+        # Update lecturer object fields
+        lecturer.firstname = firstname
+        lecturer.lastname = lastname
+        lecturer.email = email
+        lecturer.gender = gender
+        lecturer.department = Department.objects.get(departmentname=department_name)
+        lecturer.dateofbirth = dateofbirth
+        lecturer.address = address
+        lecturer.phonenumber = phone
+
+        # Handle picture upload (if a new picture is uploaded)
+        if pic:
+            lecturer.picture = pic
+
+        # Update associated user model
+        user = lecturer.user
+
+        # Check for username uniqueness
+        if user.username != usersname:
+            try:
+                User.objects.get(username=usersname)
+                messages.error(request, "Username already exists. Please choose a different one.")
+                return redirect(reverse('administration:updatelecturer', args=[id]))
+            except User.DoesNotExist:
+                user.username = usersname
+
+        # Optionally, you can set a password only if the user provides a new password
+        new_password = request.POST.get('password', None)
+        if new_password:
+            user.set_password(new_password)  # Don't store plain text password
+
+        user.save()
+
+        # Save lecturer object
+        lecturer.save()
+
+        # Show success message
+        messages.success(request, 'Lecturer successfully updated!')
+        return redirect(reverse('administration:managelecturer'))
+
+    else:
+        # Render the update form with the current lecturer's data and departments
+        return render(request, 'administration/updatelecturer.html', {"lecturer": lecturer, "departments": departments})
+    
+    
+    
+@login_required    
+def deletelecturer(request,id):
+    lecturer=Lecturer.objects.get(id=id)
+    user=lecturer.user
+    delete=user.delete()
+    if delete:
+        messages.success(request,"Successfully deleted")
+    return redirect(reverse('administration:managelecturer'))

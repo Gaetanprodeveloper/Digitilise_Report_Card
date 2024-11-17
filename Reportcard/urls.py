@@ -41,6 +41,11 @@ administrator_urlpatters=[
     path('student/<id>/',views_administration.student_detail, name='viewstudent'),
     path('student/update/<id>/',views_administration.updatestudent, name='updatestudent'),
     path('student/delete/<id>/',views_administration.deletestudent, name='deletestudent'),
+    path('createlecturer/',views_administration.createlecturers, name='createlecturer'),
+    path('lecturers/',views_administration.managelecturer, name='managelecturer'),
+    path('lecturer/<id>/',views_administration.lecturer_detail, name='lecturerdetail'),
+    path('lecturer/update/<id>/',views_administration.updatelecturer, name='updatelecturer'),
+    path('lecturer/delete/<id>/',views_administration.deletelecturer, name='deletelecturer'),
     
 ]
 

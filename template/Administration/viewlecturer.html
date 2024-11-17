@@ -1,0 +1,37 @@
+{% extends "Administration/base.html" %}
+
+{% block dash %}
+<div class="container mt-5 mb-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Lecturer Details: {{ lecturer.firstname }} {{ lecturer.lastname }}</h5>
+                    <a href="{% url 'administration:managelecturer' %}" class="btn btn-secondary btn-sm">
+                        <i class="fa fa-arrow-left mr-1"></i> Back to List
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img src="{{ lecturer.picture.url }}" alt="Lecturer Picture" class="img-fluid rounded-circle" style="width: 200px; height: 200px;">
+                        </div>
+                        <div class="col-md-8">
+                            <h4 class="mb-3">Personal Information</h4>
+                            <p><strong>Lecturer ID:</strong> {{ lecturer.id }}</p>
+                            <p><strong>Full Name:</strong> {{ lecturer.firstname }} {{ lecturer.lastname }}</p>
+                            <p><strong>Email:</strong> {{ lecturer.email }}</p>
+                            <p><strong>Gender:</strong> {{ lecturer.gender }}</p>
+                            <p><strong>Date of Birth:</strong> {{ lecturer.dateofbirth }}</p>
+                            <p><strong>Phone Number:</strong> {{ lecturer.phonenumber }}</p>
+                            <p><strong>Address:</strong> {{ lecturer.address }}</p>
+                            <p><strong>Department:</strong> {{ lecturer.department }}</p>
+                            <p><strong>Hire Date:</strong> {{ lecturer.creationdate }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock dash %}

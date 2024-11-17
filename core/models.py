@@ -57,6 +57,7 @@ class Student(models.Model):
 class Lecturer(models.Model):
     creator=models.ForeignKey(Administrator,on_delete=models.DO_NOTHING)
     user=models.OneToOneField(User,on_delete=models.CASCADE)
+    usersname=models.CharField(max_length=255,null=True)
     department=models.ForeignKey(Department,on_delete=models.CASCADE)
     firstname=models.CharField(max_length=255)
     lastname=models.CharField(max_length=255)

@@ -29,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://229b-129-0-60-50.ngrok-free.app',  # Add your ngrok URL here
+    'https://a358-102-244-223-14.ngrok-free.app',  # Add your ngrok URL here
 ]
 
 
