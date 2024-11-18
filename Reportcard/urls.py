@@ -51,6 +51,12 @@ administrator_urlpatters=[
     path('courses/<id>/',views_administration.viewcourse, name='viewcourse'),
     path('courses/<id>/update/',views_administration.updatecourse, name='updatecourse'),
     path('courses/<id>/delete/',views_administration.deletecourse, name='deletecourse'),
+    path('createmark/',views_administration.createmark, name='marks'),
+    path('marks/',views_administration.managemarks, name='managemarks'),
+    path('get-semester/<int:course_id>/', views_administration.get_course_semester, name='get_course_semester'),
+    path('marks/update/<id>/',views_administration.updatemark, name='updatemark'),
+    path('marks/<id>/',views_administration.viewmark, name='viewmark'),
+    path('marks/delete/<id>/',views_administration.deletemark, name='deletemark'),
     
 ]
 

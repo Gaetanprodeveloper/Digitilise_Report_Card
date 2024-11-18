@@ -130,6 +130,7 @@ class Mark(models.Model):
         (Grade_C1,"C+"),(Grade_C2,"C"),(Grade_C3,"C-"),
         (Grade_D,"D"),(Grade_E,"E"),(Grade_F,"F"),
     )
+    creator=models.ForeignKey(Administrator,on_delete=models.CASCADE,null=True)
     student=models.ForeignKey(Student,on_delete=models.CASCADE)
     lecturer=models.ForeignKey(Lecturer,on_delete=models.CASCADE)
     course=models.ForeignKey(Course,on_delete=models.CASCADE)

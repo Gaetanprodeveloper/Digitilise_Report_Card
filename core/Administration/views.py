@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib import messages
 from django.urls import reverse
@@ -580,4 +581,166 @@ def deletecourse(request,id):
     if delete:
         messages.success(request,'Course deleted successfully')
         return redirect('administration:managecourse')
+    return render(request)
+
+
+@login_required
+def get_course_semester(request, course_id):
+    try:
+        course = Course.objects.get(id=course_id)
+        return JsonResponse({
+            'semester': course.semester,
+            'lecturer': f"{course.lecturer.firstname} {course.lecturer.lastname}",
+            'lecturer_id': course.lecturer.id,
+            'lecturer_name': course.lecturer.firstname + ' ' + course.lecturer.lastname,
+            
+        })
+    except Course.DoesNotExist:
+        return JsonResponse({'error': 'Course not found'}, status=404)  # Assuming `semester` is a field in the `Course` model.
+
+@login_required
+def createmark(request):
+    if request.method == 'POST':
+        student_id = request.POST.get('student')
+        lecturer_id = request.POST.get('lecturer')
+        course_id = request.POST.get('course')
+        semester = request.POST.get('semester')
+        mark = request.POST.get('mark')
+        grade = request.POST.get('grade')
+        
+         # Ensure that lecturer_id is an integer
+        try:
+            lecturer_id = int(lecturer_id)  # Convert to integer to prevent any string errors
+        except ValueError:
+            messages.error(request, "Invalid lecturer ID.")
+            return redirect('administration:marks')
+
+        student = get_object_or_404(Student, id=student_id)
+        lecturer = get_object_or_404(Lecturer, id=lecturer_id)
+        course = get_object_or_404(Course, id=course_id)
+        user = request.user
+        creator = Administrator.objects.get(user=user)
+
+        existing_mark = Mark.objects.filter(student=student, course=course, semester=semester).first()
+
+        if existing_mark:
+            messages.error(request, 'This student already has a mark for this course and semester.')
+            return redirect('administration:marks')
+
+        try:
+            mark = int(mark)
+            if not (0 <= mark <= 20):
+                raise ValueError("Mark must be between 0 and 20.")
+        except ValueError as e:
+            messages.error(request, f"Invalid input for mark: {e}")
+            return redirect('administration:createmark')
+
+        new_mark = Mark.objects.create(
+            creator=creator,
+            student=student,
+            lecturer=lecturer,
+            course=course,
+            mark=mark,
+            grade=grade,
+            semester=semester,
+        )
+        new_mark.save()
+        messages.success(request, 'Mark created successfully')
+        return redirect('administration:managemarks')
+
+    students = Student.objects.all()
+    #lecturers = Lecturer.objects.all()
+    courses = Course.objects.all()
+    grades = Mark.Grade
+
+    return render(request, 'Administration/createmark.html', {
+        'students': students,
+        'courses': courses,
+        'grades': grades,
+    })
+    
+@login_required   
+def managemarks(request):
+    marks=Mark.objects.all()
+    return render(request, 'Administration/managemarks.html',{'marks':marks})
+
+
+@login_required
+def updatemark(request, id):
+    # Get the mark object or return a 404 if not found
+    mark = get_object_or_404(Mark, id=id)
+
+    if request.method == 'POST':
+        student_id = request.POST.get('student')
+        lecturer_id = request.POST.get('lecturer')
+        course_id = request.POST.get('course')
+        semester = request.POST.get('semester')
+        mark_value = request.POST.get('mark')
+        grade = request.POST.get('grade')
+
+        # Ensure that lecturer_id is an integer
+        try:
+            lecturer_id = int(lecturer_id)  # Convert to integer to prevent any string errors
+        except ValueError:
+            messages.error(request, "Invalid lecturer ID.")
+            return redirect('administration:updatemark', id=id)
+
+        student = get_object_or_404(Student, id=student_id)
+        lecturer = get_object_or_404(Lecturer, id=lecturer_id)
+        course = get_object_or_404(Course, id=course_id)
+        user = request.user
+        creator = Administrator.objects.get(user=user)
+
+        # Check if the student already has a mark for this course and semester
+        if mark.student != student or mark.course != course or mark.semester != semester:
+            existing_mark = Mark.objects.filter(student=student, course=course, semester=semester).first()
+            if existing_mark and existing_mark.id != mark.id:
+                messages.error(request, 'This student already has a mark for this course and semester.')
+                return redirect('administration:updatemark', id=id)
+
+        try:
+            mark_value = int(mark_value)
+            if not (0 <= mark_value <= 20):
+                raise ValueError("Mark must be between 0 and 20.")
+        except ValueError as e:
+            messages.error(request, f"Invalid input for mark: {e}")
+            return redirect('administration:updatemark', id=id)
+
+        # Update the mark record
+        mark.creator = creator
+        mark.student = student
+        mark.lecturer = lecturer
+        mark.course = course
+        mark.mark = mark_value
+        mark.grade = grade
+        mark.semester = semester
+        mark.save()
+
+        messages.success(request, 'Mark updated successfully')
+        return redirect('administration:managemarks')
+
+    # Pass data to the template for rendering
+    students = Student.objects.all()
+    lecturers = Lecturer.objects.all()
+    courses = Course.objects.all()
+    grades = Mark.Grade
+
+    return render(request, 'Administration/updatemark.html', {
+        'mark': mark,
+        'students': students,
+        'lecturers': lecturers,
+        'courses': courses,
+        'grades': grades,
+    })
+
+def viewmark(request,id):
+    mark = get_object_or_404(Mark, id=id)
+    return render(request, 'Administration/viewmark.html', {'mark': mark})
+
+def deletemark(request,id):
+    mark=Mark.objects.get(id=id)
+    delete=mark.delete()
+    if delete:
+        messages.success(request,'mark deleted successfully')
+        return redirect('administration:managemarks')
     return render(request)
