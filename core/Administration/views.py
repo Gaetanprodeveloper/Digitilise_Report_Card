@@ -510,7 +510,7 @@ def create_course(request):
         # Check if the course was created and send a message
         if course:
             messages.success(request, "Course created successfully!")
-            return redirect(reverse('administration:createcourse'))  # Redirect to the list of courses
+            return redirect('administration:managecourse')  # Redirect to the list of courses
         else:
             messages.error(request, "Error creating the course.")
             return redirect(reverse('administration:createcourse'))  # Stay on the create course page
@@ -523,8 +523,61 @@ def create_course(request):
             'semesters': Course.SEMESTER  # Pass the SEMESTER choices to the template
         })
         
-        
+
+@login_required       
 def managecourse(request):
     # Get all courses created by the current administrator
     courses = Course.objects.all()
     return render(request,'administration/managecourse.html',{'courses':courses})
+
+
+@login_required 
+def viewcourse(request, id):
+    # Get the course object or return a 404 if not found
+    course = get_object_or_404(Course, id=id)
+    
+    # Render the course details page
+    return render(request, 'Administration/viewcourse.html', {'course': course})
+
+@login_required 
+def updatecourse(request, id):
+    # Get the course object or return a 404 if not found
+    course = get_object_or_404(Course, id=id)
+
+    if request.method == 'POST':
+        # Update course details from the form
+        course.title = request.POST['coursetitle']
+        course.code = request.POST['coursecode']
+        course.credits = request.POST['credits']
+        course.semester = request.POST['semester']
+        
+        # Update related foreign key objects
+        classe_name = request.POST['class']
+        lecturer_name = request.POST['lecturer']
+        course.classe = Classe.objects.get(classcode=classe_name)
+        course.lecturer = Lecturer.objects.get(firstname=lecturer_name)
+        
+        # Save the updated course
+        course.save()
+        messages.success(request, 'Course updated successfully')
+        return redirect('administration:managecourse')
+
+    # Get all classes and lecturers for the form dropdowns
+    classes = Classe.objects.all()
+    lecturers = Lecturer.objects.all()
+
+    return render(request, 'Administration/updatecourse.html', {
+        'course': course,
+        'classes': classes,
+        'lecturers': lecturers,
+        'semesters': Course.SEMESTER
+    })
+    
+    
+def deletecourse(request,id):
+    course=Course.objects.get(id=id)
+    delete=course.delete()
+    if delete:
+        messages.success(request,'Course deleted successfully')
+        return redirect('administration:managecourse')
+    return render(request)

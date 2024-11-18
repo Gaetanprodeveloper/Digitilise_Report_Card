@@ -1,0 +1,42 @@
+{% extends "administration/base.html" %}
+{% block dash %}
+<div class="container" style="margin-top: 80px; margin-bottom: 80px;">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">Course Details</h5>
+          <a href="{% url 'administration:managecourse' %}" class="btn btn-secondary btn-sm">
+            <i class="fa fa-arrow-left mr-1"></i> Back to List
+        </a>
+        </div>
+        <div class="card-body">
+          <strong>COURSE TITLE:</strong> 
+          <p class="card-text">{{ course.coursetitle }}</p>
+          
+          <strong>COURSE CODE:</strong> 
+          <p class="card-text">{{ course.coursecode }}</p>
+          
+          <strong>CREDITS:</strong> 
+          <p class="card-text">{{ course.credits }}</p>
+          
+          <strong>SEMESTER:</strong> 
+          <p class="card-text">{{ course.semester }}</p>
+          
+          <strong>CLASS:</strong> 
+          <p class="card-text">{{ course.classe.classcode }}</p>
+          
+          <strong>LECTURER:</strong> 
+          <p class="card-text">{{ course.lecturer.firstname }} {{ course.lecturer.lastname }}</p>
+
+          <strong>CREATED BY:</strong> 
+          <p class="card-text">{{ course.creator }}</p>
+          
+          <strong>CREATED ON:</strong> 
+          <p class="card-text">{{ course.creationdate }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock dash %}

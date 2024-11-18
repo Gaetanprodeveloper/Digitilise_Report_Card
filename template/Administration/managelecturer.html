@@ -24,6 +24,7 @@
                                     <th><i class="fa fa-male mr-1"></i> Gender</th>
                                     <th><i class="fa fa-map-marker-alt mr-1"></i> Address</th>
                                     <th><i class="fa fa-calendar-alt mr-1"></i> Joined On</th>
+                                    <th><i class="fa fa-user mr-1"></i> Created By</th>
                                     <th><i class="fa fa-cogs mr-1"></i> Actions</th>
                                 </tr>
                             </thead>
@@ -38,6 +39,7 @@
                                     <td>{{ lecturer.gender }}</td>
                                     <td>{{ lecturer.address }}</td>
                                     <td>{{ lecturer.creationdate }}</td>
+                                    <td>{{ lecturer.creator }}</td>
                                     <td>
                                         <div class="d-flex justify-content-center">
                                             <a href="{% url 'administration:lecturerdetail' lecturer.id %}" class="btn btn-info btn-sm mr-1 d-flex align-items-center">

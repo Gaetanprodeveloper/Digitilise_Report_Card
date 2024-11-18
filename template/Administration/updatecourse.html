@@ -1,0 +1,107 @@
+{% extends "Administration/base.html" %}
+
+{% block dash %}
+    <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+        {% csrf_token %}
+        <p class="mt-5" style="font-size: 20px; font-weight: bolder; font-family: Arial, Helvetica, sans-serif;">Update Course</p>
+        
+        <div class="card bg-white mt-2 mb-5">
+            <div class="card-body">
+                <!-- Course Title and Code -->
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <label for="coursetitle">Course Title</label>
+                        <input type="text" class="form-control" name="coursetitle" id="coursetitle" value="{{ course.coursetitle }}" required>
+                        <div class="invalid-tooltip">
+                            Please provide a course title.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="coursecode">Course Code</label>
+                        <input type="text" class="form-control" name="coursecode" id="coursecode" value="{{ course.coursecode }}" required>
+                        <div class="invalid-tooltip">
+                            Please provide a course code.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Credits and Semester -->
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <label for="credits">Credits</label>
+                        <input type="number" class="form-control" name="credits" id="credits" value="{{ course.credits }}" required>
+                        <div class="invalid-tooltip">
+                            Please provide the course credits.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="semester">Semester</label>
+                        <select class="form-control" name="semester" id="semester" required>
+                            <option value="">Select Semester</option>
+                            {% for semester in semesters %}
+                                <option value="{{ semester.0 }}" {% if course.semester == semester.0 %}selected{% endif %}>
+                                    {{ semester.1 }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-tooltip">
+                            Please select a semester.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Class and Lecturer -->
+                <div class="form-row">
+                    <div class="col-md-6 mb-3">
+                        <label for="class">Class</label>
+                        <select class="form-control" name="class" id="class" required>
+                            <option value="">Select Class</option>
+                            {% for classe in classes %}
+                                <option value="{{ classe.classcode }}" {% if course.classe.classcode == classe.classcode %}selected{% endif %}>
+                                    {{ classe.classcode }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-tooltip">
+                            Please select a class.
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="lecturer">Lecturer</label>
+                        <select class="form-control" name="lecturer" id="lecturer" required>
+                            <option value="">Select Lecturer</option>
+                            {% for lecturer in lecturers %}
+                                <option value="{{ lecturer.firstname }}" {% if course.lecturer.firstname == lecturer.firstname %}selected{% endif %}>
+                                    {{ lecturer.firstname }} {{ lecturer.lastname }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-tooltip">
+                            Please select a lecturer.
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Update Course</button>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                var forms = document.getElementsByClassName('needs-validation');
+                Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+{% endblock %}

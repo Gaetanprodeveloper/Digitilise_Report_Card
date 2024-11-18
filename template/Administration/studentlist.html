@@ -25,6 +25,7 @@
                     <th><i class="fa fa-envelope mr-1"></i> Tutor Email</th>
                     <th><i class="fa fa-map-marker-alt mr-1"></i> Address</th>
                     <th><i class="fa fa-calendar-alt mr-1"></i> Enrollment Date</th>
+                    <th><i class="fa fa-user mr-1"></i> Created By</th>
                     <th><i class="fa fa-cogs mr-1"></i> Actions</th>
                   </tr>
                 </thead>
@@ -40,6 +41,7 @@
                     <td>{{ student.parentemail }}</td>
                     <td>{{ student.address }}</td>
                     <td>{{ student.creationdate}}</td>
+                    <td>{{ student.creator}}</td>
                     <td>
                       <div class="d-flex justify-content-center">
                         <a href="{% url 'administration:viewstudent' student.id %}" class="btn btn-info btn-sm mr-1 d-flex align-items-center">
