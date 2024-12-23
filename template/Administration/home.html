@@ -1,4 +1,226 @@
-{% extends "Administration/base.html" %}
-{% block dash %}
-Administration/
+{% extends "administration/base.html" %} {% block dash %}
+<div class="row" style="margin-top: 90px">
+	<div class="col-sm-2 mb-4">
+		<div class="card text-center bg-primary text-white">
+			<div class="card-body">
+				<i class="fas fa-users fa-3x mb-3"></i>
+				<h5 class="card-title">Users</h5>
+				<p class="card-text" style="font-weight: 900; font-size: 29px;">{{users}}</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-sm-2 mb-4">
+		<div class="card text-center bg-danger text-white">
+			<div class="card-body">
+				<i class="fas fa-user fa-3x mb-3"></i>
+				<h5 class="card-title">Administrators</h5>
+				<p class="card-text"style="font-weight: 900; font-size: 29px;">{{administrators}}</p>
+			</div>
+		</div>
+	</div>
+
+
+<div class="col-sm-2 mb-4">
+		<div class="card text-center bg-info text-white">
+			<div class="card-body">
+				<i class="fa fa-chalkboard-teacher fa-3x mb-3"></i>
+				<h5 class="card-title">Lecturers</h5>
+				<p class="card-text"style="font-weight: 900; font-size: 29px;">{{lecturers}}</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-sm-2 mb-4">
+		<div class="card text-center bg-secondary text-white">
+			<div class="card-body">
+				<i class="fas fa-users fa-3x mb-3"></i>
+				<h5 class="card-title">Students</h5>
+				<p class="card-text"style="font-weight: 900; font-size: 29px;">{{students}}</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-sm-2 mb-4">
+		<div class="card text-center bg-dark text-white">
+			<div class="card-body">
+				<i class="fa fa-building fa-3x mb-3"></i>
+				<h5 class="card-title">Departments</h5>
+				<p class="card-text"style="font-weight: 900; font-size: 29px;">{{departments}}</p>
+			</div>
+		</div>
+	</div>
+
+
+    <div class="col-sm-2 mb-4">
+		<div class="card text-center bg-dark text-white">
+			<div class="card-body">
+				<i class="fa fa-graduation-cap fa-3x mb-3"></i>
+				<h5 class="card-title">classes</h5>
+				<p class="card-text"style="font-weight: 900; font-size: 29px;">{{classes}}</p>
+			</div>
+		</div>
+	</div>
+
+	
+
+	<div class="col-sm-2 mb-4">
+		<div class="card text-center bg-success text-white">
+			<div class="card-body">
+				<i class="fa fa-book fa-3x mb-3"></i>
+				<h5 class="card-title">Courses</h5>
+				<p class="card-text"style="font-weight: 900; font-size: 29px;">{{courses}}</p>
+			</div>
+		</div>
+	</div>
+
+	
+</div>
+
+<style>
+	.card {
+		height: 100%;
+	}
+
+	.card-body {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+</style>
+{% comment %} <div class="row d-flex">
+	<div class="col-lg-6 mb-4">
+		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title"><i class="fas fa-chart-pie text-primary"></i> Daily Incomes</h5>
+
+				<!-- Pie Chart -->
+				<canvas id="Daily" style="max-height: 400px"></canvas>
+				<script>
+					document.addEventListener("DOMContentLoaded", () => {
+					  const dailyTransactions = {{ daily_transactions|default:0 }};
+					  const dailyWithdrawals = {{ daily_withdrawals|default:0 }};
+					  const dailyRefunds = {{ daily_refunds|default:0 }};
+					  new Chart(document.querySelector('#Daily'), {
+					    type: 'pie',
+					    data: {
+					      labels: [
+					        'Daily Deposits',
+					        'Daily Withdrawals',
+					        'Daily Refunds'
+					      ],
+					      datasets: [{
+					        label: 'Daily',
+					        data: [dailyTransactions, dailyWithdrawals, dailyRefunds],
+					        backgroundColor: [
+					          'rgb(255, 99, 132)',
+					          'rgb(54, 162, 235)',
+					          'rgb(255, 205, 86)'
+					        ],
+					        hoverOffset: 4
+					      }]
+					    }
+					  });
+					});
+				</script>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-6 mb-4">
+		<div class="card">
+			<div class="card-body">
+				<h5 class="card-title"><i class="fas fa-chart-bar text-primary"></i> Monthly Incomes</h5>
+
+				<!-- Bar Chart -->
+				<canvas id="barChart" style="max-height: 400px"></canvas>
+				<script>
+					document.addEventListener("DOMContentLoaded", () => {
+					  const monthlyTransactions = {{ monthly_transactions|default:0 }};
+					  const monthlyWithdrawals = {{ monthly_withdrawals|default:0 }};
+					  const monthlyRefunds = {{ monthly_refunds|default:0 }};
+					  new Chart(document.querySelector('#barChart'), {
+					    type: 'bar',
+					    data: {
+					      labels: ['Monthly Deposits','Monthly Withdrawals','Monthly Refunds'],
+					      datasets: [{
+					        label: 'Monthly Incomes',
+					        data: [monthlyTransactions,monthlyWithdrawals,monthlyRefunds],
+					        backgroundColor: [
+					          'rgba(255, 99, 132, 0.2)',
+					          'rgba(255, 159, 64, 0.2)',
+					          'rgba(255, 205, 86, 0.2)',
+					          'rgba(75, 192, 192, 0.2)',
+					          'rgba(54, 162, 235, 0.2)',
+					          'rgba(153, 102, 255, 0.2)',
+					          'rgba(201, 203, 207, 0.2)'
+					        ],
+					        borderColor: [
+					          'rgb(255, 99, 132)',
+					          'rgb(255, 159, 64)',
+					          'rgb(255, 205, 86)',
+					          'rgb(75, 192, 192)',
+					          'rgb(54, 162, 235)',
+					          'rgb(153, 102, 255)',
+					          'rgb(201, 203, 207)'
+					        ],
+					        borderWidth: 1
+					      }]
+					    },
+					    options: {
+					      scales: {
+					        y: {
+					          beginAtZero: true
+					        }
+					      }
+					    }
+					  });
+					});
+				</script>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="row d-flex" style="margin-bottom: 90px">
+ <div class="col-lg-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"> <i class="fas fa-chart-area text-primary"></i> Yearly Incomes</h5>
+
+              <!-- Polar Area Chart -->
+              <canvas id="polarAreaChart" style="max-height: 400px;"></canvas>
+              <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                  const yearlyTransactions = {{ yearly_transactions|default:0 }};
+					  const yearlyWithdrawals = {{ yearly_withdrawals|default:0 }};
+					  const yearlyRefunds = {{ yearly_refunds|default:0 }};
+                  new Chart(document.querySelector('#polarAreaChart'), {
+                    type: 'polarArea',
+                    data: {
+                      labels: [
+                        'Yearly Deposits',
+					        'Yearly Withdrawals',
+					        'Yearly Refunds'
+                      ],
+                      datasets: [{
+                        label: 'Yearly Incomes',
+                        data: [yearlyTransactions,yearlyWithdrawals,yearlyRefunds],
+                        backgroundColor: [
+                          'rgb(255, 99, 132)',
+                          'rgb(75, 192, 192)',
+                          'rgb(255, 205, 86)',
+                          'rgb(201, 203, 207)',
+                          'rgb(54, 162, 235)'
+                        ]
+                      }]
+                    }
+                  });
+                });
+              </script>
+              <!-- End Polar Area Chart -->
+
+            </div>
+          </div>
+        </div>
+        </div> {% endcomment %}
 {% endblock dash %}

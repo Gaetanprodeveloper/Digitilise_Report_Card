@@ -1,3 +1,6 @@
+from datetime import datetime
+import io
+import zipfile
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, render,redirect
 from django.contrib import messages
@@ -5,12 +8,36 @@ from django.urls import reverse
 from core.models import *
 from core.Administration import forms
 from django.contrib.auth.decorators import login_required
+import pdfkit
+from django.template.loader import render_to_string
+from django.http import HttpResponse
+from pdfkit.configuration import Configuration
+from xhtml2pdf import pisa
 
 
 @login_required
 def home(request):
     user=request.user
-    return render(request,'Administration/home.html',{"user":user})
+    
+    users=User.objects.count()
+    administrators=Administrator.objects.count()
+    students=Student.objects.count()
+    lecturers=Lecturer.objects.count()
+    courses=Course.objects.count()
+    classes=Classe.objects.count()
+    departments=Department.objects.count()
+    
+    
+    return render(request,'Administration/home.html',
+                  {"user":user,
+                   "users":users,
+                   "administrators":administrators,
+                   "students":students,
+                   "lecturers":lecturers,
+                   "courses":courses,
+                   "classes":classes,
+                   "departments":departments 
+                   })
 
 @login_required
 def createclass(request):
@@ -126,6 +153,12 @@ def createdepartment(request):
         departmentname=request.POST['departmentname']
         departmentcode=request.POST['departmentcode']
         creator=Administrator.objects.get(user=user)
+        
+        if Department.objects.filter(departmentname=departmentname).exists():
+            messages.warning(request,"Department already exist")
+            return redirect(reverse('administration:createdepartment'))
+        
+            
         department=Department.objects.create(
             creator=creator,
             departmentname=departmentname,
@@ -547,8 +580,8 @@ def updatecourse(request, id):
 
     if request.method == 'POST':
         # Update course details from the form
-        course.title = request.POST['coursetitle']
-        course.code = request.POST['coursecode']
+        course.coursetitle = request.POST['coursetitle']
+        course.coursecode = request.POST['coursecode']
         course.credits = request.POST['credits']
         course.semester = request.POST['semester']
         
@@ -744,3 +777,69 @@ def deletemark(request,id):
         messages.success(request,'mark deleted successfully')
         return redirect('administration:managemarks')
     return render(request)
+
+
+
+def select_class_semester_report(request):
+    classes = Classe.objects.all()
+    semesters = Course.SEMESTER  # Assuming the semesters are stored as tuples
+    
+    if request.method == "POST":
+        class_id = request.POST.get('class_choices')
+        semester = request.POST.get('semester_choices')
+        return generate_class_report_cards(request, class_id, semester)
+    
+    return render(
+        request,
+        "Administration/select_class_semester_report.html",
+        {
+            "classes": classes,
+            "semesters": semesters,
+        },
+    )
+
+def generate_class_report_cards(request, class_id, semester):
+    # Get the class and students
+    selected_class = Classe.objects.get(id=class_id)
+    students = Student.objects.filter(classe=selected_class)
+    academic_year = f"{datetime.now().year - 1}/{datetime.now().year}"
+
+    # Create an in-memory ZIP file
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, "w") as zip_file:
+        for student in students:
+            # Prepare student-specific data
+            marks = Mark.objects.filter(student=student, semester=semester)
+            total_marks = sum(mark.mark * mark.course.credits for mark in marks)
+            total_credits = sum(mark.course.credits for mark in marks)
+            average = total_marks / total_credits if total_credits else 0
+
+            # Render HTML for the student's report
+            html_content = render_to_string(
+                "Administration/class_report_template.html",
+                {
+                    "student": student,
+                    "marks": marks,
+                    "average": average,
+                    "class_name": selected_class.classname,
+                    "semester": semester,
+                    'academic_year':academic_year,
+                    "current_date": datetime.now().strftime("%d/%m/%Y"),
+                },
+            )
+
+            # Generate PDF
+            pdf_buffer = io.BytesIO()
+            pisa_status = pisa.CreatePDF(html_content, dest=pdf_buffer)
+            if pisa_status.err:
+                return HttpResponse(f"An error occurred while generating PDF for {student.firstname} {student.lastname}.")
+
+            # Add PDF to ZIP file
+            pdf_buffer.seek(0)
+            zip_file.writestr(f"{student.firstname}_{student.lastname}_report.pdf", pdf_buffer.read())
+
+    # Send ZIP file as response
+    zip_buffer.seek(0)
+    response = HttpResponse(zip_buffer, content_type="application/zip")
+    response["Content-Disposition"] = f'attachment; filename="class_reports_{selected_class.classname}_{semester}.zip"'
+    return response

@@ -9,7 +9,7 @@
         <ul class="sidebar-nav">
           <!-- Dashboard -->
           <li class="nav-item mb-5">
-            <a class="nav-link d-flex align-items-center" href="#">
+            <a class="nav-link d-flex align-items-center" href="{%url 'administration:home'%}">
               <i class="fas fa-tachometer-alt mr-2"></i> Dashboard
             </a>
           </li>
@@ -99,9 +99,8 @@
             </a>
             <div class="collapse" id="reportCardMenu">
               <ul class="nav-content">
-                <li><a href="#">Print for Student</a></li>
-                <li><a href="#">Print for Semester</a></li>
-                <li><a href="#">Print All</a></li>
+                <li><a href="#">Print Student</a></li>
+                <li><a href="{%url 'administration:classreport'%}">Print Class</a></li>
               </ul>
             </div>
           </li>

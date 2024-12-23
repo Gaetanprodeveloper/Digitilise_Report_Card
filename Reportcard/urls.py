@@ -57,7 +57,7 @@ administrator_urlpatters=[
     path('marks/update/<id>/',views_administration.updatemark, name='updatemark'),
     path('marks/<id>/',views_administration.viewmark, name='viewmark'),
     path('marks/delete/<id>/',views_administration.deletemark, name='deletemark'),
-    
+    path('generate report card for a class',views_administration.select_class_semester_report, name="classreport")    
 ]
 
 lecturer_urlpatters=[

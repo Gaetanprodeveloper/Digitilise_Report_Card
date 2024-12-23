@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Report Card</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header img {
+            height: 100px;
+        }
+        .header h1 {
+            font-size: 24px;
+            margin: 5px 0;
+            color: #007BFF;
+        }
+        .header p {
+            font-size: 14px;
+            margin: 0;
+            color: #555;
+        }
+        .details-table, .marks-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .details-table th, .details-table td,
+        .marks-table th, .marks-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .details-table th {
+            background-color: #f9f9f9;
+        }
+        .marks-table th {
+            background-color: #007BFF;
+            color: #fff;
+        }
+        .marks-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .final-average {
+            text-align: center;
+            margin-top: 20px;
+            background: #eaf4fc;
+            padding: 10px;
+            border: 1px solid #007BFF;
+            border-radius: 5px;
+        }
+        .final-average h3 {
+            margin: 0;
+            color: #007BFF;
+            font-size: 20px;
+        }
+        .qr-code {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .qr-code img {
+            height: 150px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+        }
+        .footer p {
+            margin: 5px 0;
+        }
+        .student-image {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .student-image img {
+            border-radius: 50%;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <img src="{% static 'images/logo.png' %}" alt="School Logo" />
+            <h1>Education Center</h1>
+            <p>Address | Contact | Website</p>
+        </div>
+
+        <!-- Student Image -->
+        <div class="student-image">
+            <img src="{{student.picture.url}}" alt="{{ student.firstname }} {{ student.lastname }}'s Image" />
+        </div>
+
+        <!-- Student Information -->
+        <table class="details-table">
+            <tr>
+                <th>Student Name</th>
+                <td>{{ student.firstname }} {{ student.lastname }}</td>
+                <th>Registration Number</th>
+                <td>{{ student.id }}</td>
+            </tr>
+            <tr>
+                <th>Date of Birth</th>
+                <td>{{ student.dateofbirth }}</td>
+                <th>Academic Year</th>
+                <td>{{ academic_year }}</td>
+            </tr>
+            <tr>
+                <th>Class</th>
+                <td>{{ class_name }}</td>
+                <th>Semester</th>
+                <td>{{ semester }}</td>
+            </tr>
+        </table>
+
+        <!-- Marks Details -->
+        <h3>Semester Results</h3>
+        <table class="marks-table">
+            <thead>
+                <tr>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Credits</th>
+                    <th>Marks</th>
+                    <th>Grade</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mark in marks %}
+                <tr>
+                    <td>{{ mark.course.coursecode }}</td>
+                    <td>{{ mark.course.coursetitle}}</td>
+                    <td>{{ mark.course.credits }}</td>
+                    <td>{{ mark.mark }}</td>
+                    <td>{{ mark.grade }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Final Average -->
+        <div class="final-average">
+            <h3>Final Average: {{ average }}</h3>
+        </div>
+
+        <!-- QR Code Section -->
+        <div class="qr-code">
+            <img src="{{ qr_code_url }}" alt="QR Code">
+            <p>Scan the QR code to verify this report card.</p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>This report is system-generated and requires no signature.</p>
+            <p>Date Generated: {{ current_date }}</p>
+        </div>
+    </div>
+</body>
+</html>
